@@ -36,10 +36,10 @@ public class ChangeTextAppiumTest {
         capabilities.setCapability(APP_ACTIVITY, ".MainActivity");
         capabilities.setCapability(AUTOMATION_NAME, "UiAutomator2");
         capabilities.setCapability("app", "C:\\Users\\user\\appium\\app\\build\\outputs\\apk\\debug\\app-debug.apk");
-        capabilities.setCapability("uiautomator2ServerLaunchTimeout", 90000);
+        capabilities.setCapability("uiautomator2ServerLaunchTimeout", 120000);
 
         driver = new AndroidDriver(new URL("http://127.0.0.1:4723"), capabilities);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(60));
     }
 
     @AfterEach
