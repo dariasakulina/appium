@@ -13,14 +13,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'adopt'
           cache: gradle
+
       - name: Grant execute permission
         run: chmod +x gradlew
+
       - name: Build project
         run: ./gradlew build
 
@@ -29,18 +32,24 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v3
+
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'adopt'
           cache: gradle
+
       - name: Grant execute permission
         run: chmod +x gradlew
+
       - name: Run emulator and tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
+          target: default
+          arch: x86_64
+          profile: Nexus 6
           script: ./gradlew connectedCheck
 
   appium-tests:
@@ -49,13 +58,27 @@ jobs:
     continue-on-error: true
     steps:
       - uses: actions/checkout@v3
+
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'adopt'
           cache: gradle
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Appium
+        run: npm install -g appium
+
+      - name: Start Appium Server
+        run: appium --log-level info &
+
       - name: Grant execute permission
         run: chmod +x gradlew
-      - name: Run Appium tests
+
+      - name: Run Appium Tests
         run: ./gradlew appium-tests:test
