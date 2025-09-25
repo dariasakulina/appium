@@ -21,15 +21,14 @@ jobs:
           distribution: 'adopt'
           cache: gradle
 
-      - name: Grant execute permission
+      - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Build project
-        run: ./gradlew build
+      - name: Build with Gradle
+        run: ./gradlew :app:assembleDebug :app:check
 
-  android-tests:
+  test:
     runs-on: macos-13
-    needs: build
     steps:
       - uses: actions/checkout@v3
 
@@ -40,7 +39,7 @@ jobs:
           distribution: 'adopt'
           cache: gradle
 
-      - name: Grant execute permission
+      - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
       - name: Run Android instrumentation tests
@@ -48,5 +47,3 @@ jobs:
         with:
           api-level: 29
           script: ./gradlew connectedCheck
-
-
